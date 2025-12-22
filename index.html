@@ -3,210 +3,212 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>羽球獎品出清｜Badminton Sale</title>
-  <meta name="description" content="羽球獎品/用品出清展示頁。可面交/寄送，歡迎私訊詢問。" />
-  <meta name="theme-color" content="#111111" />
+  <title>羽球獎品出清</title>
+  <meta name="description" content="羽球獎品/用品出清展示頁。手機與電腦皆適配，簡潔清新。" />
 
   <style>
     :root{
-      --bg:#0b0d12;
-      --card:#121624;
-      --muted:#a9b1c7;
-      --text:#eef2ff;
-      --line:#222841;
-      --accent:#7c3aed;
-      --accent2:#22c55e;
-      --danger:#ef4444;
-      --shadow: 0 18px 60px rgba(0,0,0,.35);
-      --radius: 18px;
+      --bg:#fbfbfc;
+      --card:#ffffff;
+      --text:#121212;
+      --muted:#6b7280;
+      --line:#eceef1;
+      --accent:#3b82f6;
+      --soft:#f4f6f8;
+      --radius:18px;
+      --shadow: 0 10px 30px rgba(17, 24, 39, .06);
     }
     *{box-sizing:border-box}
-    html,body{height:100%}
     body{
       margin:0;
       font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI",
-                   "PingFang TC","Noto Sans TC","Microsoft JhengHei", Arial, sans-serif;
-      background:
-        radial-gradient(1000px 700px at 10% 0%, rgba(124,58,237,.22), transparent 55%),
-        radial-gradient(900px 600px at 90% 10%, rgba(34,197,94,.18), transparent 50%),
-        linear-gradient(180deg, #070810, #0b0d12 35%, #070810);
+        "PingFang TC","Noto Sans TC","Microsoft JhengHei", Arial, sans-serif;
+      background: var(--bg);
       color: var(--text);
-      line-height: 1.55;
+      line-height: 1.6;
     }
-    a{color:inherit}
-    .wrap{max-width:1100px; margin:0 auto; padding:24px}
-    .topbar{
-      display:flex; align-items:center; justify-content:space-between;
-      gap:12px; padding:10px 0 0;
+    a{color:inherit; text-decoration:none}
+    .wrap{max-width:980px; margin:0 auto; padding:22px}
+    header{
+      display:flex; align-items:flex-start; justify-content:space-between;
+      gap:14px; padding:10px 0 4px;
     }
     .brand{
-      display:flex; gap:10px; align-items:center; min-width:0;
+      display:flex; align-items:center; gap:10px; min-width:0;
     }
-    .logo{
-      width:40px; height:40px; border-radius:14px;
-      display:grid; place-items:center;
-      background: rgba(255,255,255,.06);
-      border: 1px solid rgba(255,255,255,.08);
-      box-shadow: 0 10px 30px rgba(0,0,0,.25);
+    .dot{
+      width:12px; height:12px; border-radius:50%;
+      background: var(--accent);
+      box-shadow: 0 0 0 6px rgba(59,130,246,.12);
+      margin-top:7px;
       flex:0 0 auto;
     }
-    .brand h1{font-size:16px; margin:0}
-    .brand p{margin:0; font-size:12px; color:var(--muted)}
-    .actions{display:flex; gap:10px; flex-wrap:wrap}
+    h1{
+      font-size:18px; margin:0;
+      letter-spacing:.2px;
+    }
+    .sub{
+      margin:4px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .btns{
+      display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end;
+    }
     .btn{
-      display:inline-flex; align-items:center; justify-content:center;
-      gap:8px;
+      display:inline-flex; align-items:center; gap:8px;
       padding:10px 12px;
       border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.06);
-      text-decoration:none;
-      font-weight:600;
-      font-size:13px;
-      transition: transform .12s ease, background .12s ease, border-color .12s ease;
+      border:1px solid var(--line);
+      background: var(--card);
+      box-shadow: 0 6px 18px rgba(17, 24, 39, .04);
+      font-weight: 650;
+      font-size: 13px;
+      transition: transform .12s ease;
       user-select:none;
+      white-space:nowrap;
     }
-    .btn:hover{transform: translateY(-1px); background: rgba(255,255,255,.10)}
+    .btn:hover{transform: translateY(-1px)}
     .btn.primary{
-      background: linear-gradient(135deg, rgba(124,58,237,.95), rgba(79,70,229,.95));
-      border-color: rgba(124,58,237,.6);
+      background: var(--accent);
+      color: #fff;
+      border-color: rgba(59,130,246,.35);
+      box-shadow: 0 10px 26px rgba(59,130,246,.18);
     }
-    .btn.primary:hover{background: linear-gradient(135deg, rgba(124,58,237,1), rgba(79,70,229,1));}
-    .btn.green{
-      background: linear-gradient(135deg, rgba(34,197,94,.95), rgba(16,185,129,.95));
-      border-color: rgba(34,197,94,.6);
-    }
-    .btn.green:hover{background: linear-gradient(135deg, rgba(34,197,94,1), rgba(16,185,129,1));}
 
     .hero{
-      margin-top:18px;
+      margin-top:14px;
+      border: 1px solid var(--line);
+      background: var(--card);
       border-radius: var(--radius);
-      padding: 22px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.04);
+      padding: 16px;
       box-shadow: var(--shadow);
-      overflow:hidden;
-      position:relative;
     }
-    .hero:before{
-      content:"";
-      position:absolute; inset:-1px;
-      background: radial-gradient(700px 250px at 20% 0%, rgba(124,58,237,.25), transparent 60%),
-                  radial-gradient(650px 240px at 80% 20%, rgba(34,197,94,.18), transparent 60%);
-      pointer-events:none;
+    .heroRow{
+      display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between;
     }
-    .hero > *{position:relative}
-    .hero h2{
-      margin:0 0 6px;
-      font-size: clamp(22px, 4vw, 34px);
-      letter-spacing: .2px;
-    }
-    .hero .sub{
-      color: var(--muted);
-      margin:0;
-      font-size: 14px;
-      max-width: 70ch;
-    }
-    .chips{display:flex; flex-wrap:wrap; gap:10px; margin-top:14px}
-    .chip{
+    .pill{
+      display:inline-flex; align-items:center;
+      gap:8px;
       padding:8px 10px;
       border-radius: 999px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.05);
-      color: #dbe2ff;
+      background: var(--soft);
+      border:1px solid var(--line);
+      font-size: 12px;
+      color: #374151;
+    }
+    .pill b{font-weight:750}
+    .note{
+      margin:10px 0 0;
+      color: var(--muted);
       font-size: 12px;
     }
+
+    .sectionTitle{
+      margin:18px 0 10px;
+      font-size: 14px;
+      color:#374151;
+      font-weight: 750;
+      letter-spacing:.2px;
+    }
+
     .grid{
-      margin-top:18px;
       display:grid;
       grid-template-columns: repeat(12, 1fr);
-      gap:14px;
+      gap:12px;
     }
     .card{
       grid-column: span 12;
+      border:1px solid var(--line);
       border-radius: var(--radius);
-      background: rgba(255,255,255,.04);
-      border:1px solid rgba(255,255,255,.10);
+      background: var(--card);
       overflow:hidden;
-      box-shadow: 0 10px 40px rgba(0,0,0,.25);
+      box-shadow: var(--shadow);
     }
     @media (min-width: 760px){
       .card{grid-column: span 6;}
-    }
-    @media (min-width: 1020px){
-      .card{grid-column: span 4;}
+      header{align-items:center}
+      h1{font-size:20px}
     }
 
-    .card .media{
+    .media{
+      width:100%;
       aspect-ratio: 4 / 3;
-      background: linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,.02));
-      display:grid;
-      place-items:center;
+      background: var(--soft);
+      border-bottom: 1px solid var(--line);
       position:relative;
-      border-bottom:1px solid rgba(255,255,255,.10);
     }
-    .card img{
+    .media img{
       width:100%; height:100%;
       object-fit: cover;
       display:block;
     }
-    .badge{
-      position:absolute; top:12px; left:12px;
-      padding:6px 10px;
-      border-radius: 999px;
+    .tag{
+      position:absolute;
+      top:12px; left:12px;
+      padding:7px 10px;
+      border-radius:999px;
       font-size:12px;
-      font-weight:700;
-      backdrop-filter: blur(8px);
-      border:1px solid rgba(255,255,255,.14);
-      background: rgba(0,0,0,.25);
+      font-weight: 800;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.92);
+      color:#111827;
     }
-    .badge.sold{color:#fff; background: rgba(239,68,68,.28); border-color: rgba(239,68,68,.4)}
-    .badge.ok{color:#fff; background: rgba(34,197,94,.22); border-color: rgba(34,197,94,.35)}
-    .content{padding:14px 14px 12px}
-    .title{
-      display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
+    .tag.sold{
+      color:#6b7280;
     }
-    .title h3{margin:0; font-size:16px; letter-spacing:.2px}
-    .price{margin:0; font-weight:900; font-size:16px; color:#fff}
-    .meta{
+
+    .content{padding:14px}
+    .row{
+      display:flex; align-items:flex-start; justify-content:space-between;
+      gap:10px;
+    }
+    .name{
+      margin:0;
+      font-size: 15px;
+      font-weight: 780;
+      letter-spacing:.1px;
+    }
+    .price{
+      margin:0;
+      font-size: 15px;
+      font-weight: 900;
+    }
+    .desc{
       margin:8px 0 0;
       color: var(--muted);
       font-size: 13px;
     }
-    .meta ul{margin:0; padding-left:18px}
-    .meta li{margin:4px 0}
-    .foot{
+    .desc ul{margin:0; padding-left:18px}
+    .desc li{margin:4px 0}
+
+    .cardFoot{
+      display:flex; gap:10px; flex-wrap:wrap;
       padding: 12px 14px 14px;
-      display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between;
-      border-top:1px solid rgba(255,255,255,.08);
-      background: rgba(0,0,0,.18);
+      border-top:1px solid var(--line);
+      background: #fafafa;
+      align-items:center; justify-content:space-between;
     }
     .small{
-      color: var(--muted);
       font-size: 12px;
+      color: var(--muted);
     }
-    .contact{
+
+    .contactBox{
+      margin-top: 14px;
+      border:1px solid var(--line);
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 16px;
+      box-shadow: var(--shadow);
+    }
+    .contactBox p{margin:0; color: var(--muted); font-size:13px}
+    .contactRow{
+      margin-top: 12px;
       display:flex; gap:10px; flex-wrap:wrap;
     }
-
-    .sectionTitle{
-      margin: 24px 0 8px;
-      font-size: 14px;
-      color: #dbe2ff;
-      opacity:.95;
-      display:flex; align-items:center; gap:8px;
-    }
-    .sectionTitle:before{
-      content:"";
-      width:10px; height:10px; border-radius:50%;
-      background: rgba(124,58,237,.9);
-      box-shadow: 0 0 0 4px rgba(124,58,237,.15);
-    }
-
     .footer{
-      margin: 26px 0 6px;
-      padding: 16px 0 0;
-      border-top: 1px solid rgba(255,255,255,.10);
+      margin: 18px 0 8px;
       color: var(--muted);
       font-size: 12px;
       display:flex; flex-wrap:wrap; gap:10px;
@@ -214,165 +216,137 @@
     }
     .kbd{
       padding:2px 8px;
-      border-radius: 8px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.06);
-      color:#dbe2ff;
-      font-weight:700;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      background: var(--soft);
+      color:#374151;
+      font-weight: 800;
       font-size: 11px;
-    }
-    .hint{
-      margin-top:10px;
-      color: var(--muted);
-      font-size: 12px;
-    }
-    .hint code{
-      background: rgba(255,255,255,.06);
-      border: 1px solid rgba(255,255,255,.08);
-      padding: 2px 6px;
-      border-radius: 8px;
-      color:#dbe2ff;
     }
   </style>
 </head>
 
 <body>
   <div class="wrap">
-    <div class="topbar">
+    <header>
       <div class="brand">
-        <div class="logo" aria-hidden="true">🏸</div>
+        <div class="dot" aria-hidden="true"></div>
         <div style="min-width:0">
           <h1>羽球獎品出清</h1>
-          <p>便宜出清｜可面交/寄送｜先到先得</p>
+          <p class="sub">便宜出清｜可面交 / 店到店 / 郵寄</p>
         </div>
       </div>
 
-      <div class="actions">
-        <!-- TODO: 把 #line 換成你的 LINE 連結，例如：https://line.me/ti/p/xxxx -->
-        <a class="btn green" href="#line">LINE 私訊</a>
+      <div class="btns">
+        <!-- TODO：把 LINE 連結換成你的，例如：https://line.me/ti/p/xxxx -->
+        <a class="btn" href="#contact">聯絡我</a>
         <a class="btn primary" href="#items">看商品</a>
       </div>
-    </div>
+    </header>
 
     <section class="hero">
-      <h2>簡單、清楚、好聯絡的出清頁</h2>
-      <p class="sub">這個頁面適合用手機或電腦瀏覽。你可以把每個商品的圖片、名稱、價格、狀態更新成最新，朋友打開就能直接看。</p>
-      <div class="chips">
-        <div class="chip">✅ 手機 / 電腦自動排版</div>
-        <div class="chip">✅ 商品卡片展示</div>
-        <div class="chip">✅ 狀態：可售 / 已售</div>
-        <div class="chip">✅ 一鍵聯絡（LINE）</div>
+      <div class="heroRow">
+        <div class="pill">✅ <b>手機 / 電腦</b> 自動適配</div>
+        <div class="pill">🧾 可售 / 已售 一目了然</div>
+        <div class="pill">📦 可面交 / 寄送</div>
       </div>
-      <div class="hint">小提醒：把你的商品圖片放進 repo（例如放在 <code>images/</code>），再把下面圖片路徑改成 <code>images/xxx.jpg</code> 就完成。</div>
+      <div class="note">想改內容很簡單：只要編輯 <span class="kbd">index.html</span> 裡的商品名稱、價格、圖片即可。</div>
     </section>
 
-    <div class="sectionTitle" id="items">商品清單</div>
+    <div class="sectionTitle" id="items">商品</div>
 
     <section class="grid" aria-label="items">
-      <!-- 商品 1 -->
+      <!-- 商品 1（可售） -->
       <article class="card">
         <div class="media">
-          <!-- 換成你的圖片路徑：images/racket.jpg -->
+          <!-- 建議：把圖片放到 repo 的 images/ 資料夾，然後改成 images/racket.jpg -->
           <img src="https://images.unsplash.com/photo-1521412644187-c49fa049e84d?auto=format&fit=crop&w=1200&q=60" alt="羽球拍" />
-          <div class="badge ok">可售</div>
+          <div class="tag">可售</div>
         </div>
         <div class="content">
-          <div class="title">
-            <h3>YONEX 羽球拍（型號：___）</h3>
+          <div class="row">
+            <h3 class="name">YONEX 羽球拍（型號：___）</h3>
             <p class="price">$1,200</p>
           </div>
-          <div class="meta">
+          <div class="desc">
             <ul>
-              <li>狀態：全新/二手（填你實際狀況）</li>
-              <li>備註：握把尺寸、重量、含拍套等</li>
+              <li>狀態：全新 / 二手（填你實際狀況）</li>
+              <li>備註：重量、握把、配件等</li>
               <li>交易：面交 / 店到店 / 郵寄</li>
             </ul>
           </div>
         </div>
-        <div class="foot">
+        <div class="cardFoot">
           <div class="small">更新：2025-12-22</div>
-          <div class="contact">
-            <a class="btn" href="#line">詢問</a>
-            <a class="btn primary" href="#items">再看更多</a>
-          </div>
+          <a class="btn primary" href="#contact">詢問</a>
         </div>
       </article>
 
-      <!-- 商品 2（已售示例） -->
+      <!-- 商品 2（已售） -->
       <article class="card">
         <div class="media">
           <img src="https://images.unsplash.com/photo-1521412644187-c49fa049e84d?auto=format&fit=crop&w=1200&q=60" alt="羽球鞋" />
-          <div class="badge sold">已售</div>
+          <div class="tag sold">已售</div>
         </div>
         <div class="content">
-          <div class="title">
-            <h3>羽球鞋（尺寸：26.5）</h3>
+          <div class="row">
+            <h3 class="name">羽球鞋（尺寸：26.5）</h3>
             <p class="price">$900</p>
           </div>
-          <div class="meta">
+          <div class="desc">
             <ul>
-              <li>狀態：僅試穿 / 近全新</li>
-              <li>備註：盒裝是否完整、鞋況</li>
+              <li>狀態：近全新 / 僅試穿</li>
+              <li>備註：盒裝、鞋況</li>
               <li>交易：面交 / 店到店 / 郵寄</li>
             </ul>
           </div>
         </div>
-        <div class="foot">
-          <div class="small">已售出（可留作紀錄）</div>
-          <div class="contact">
-            <a class="btn" href="#items">返回清單</a>
-          </div>
+        <div class="cardFoot">
+          <div class="small">已售出（可保留紀錄）</div>
+          <a class="btn" href="#items">返回</a>
         </div>
       </article>
 
-      <!-- 商品 3 -->
+      <!-- 商品 3（可售） -->
       <article class="card">
         <div class="media">
           <img src="https://images.unsplash.com/photo-1521412644187-c49fa049e84d?auto=format&fit=crop&w=1200&q=60" alt="羽球" />
-          <div class="badge ok">可售</div>
+          <div class="tag">可售</div>
         </div>
         <div class="content">
-          <div class="title">
-            <h3>羽球（12 入）</h3>
+          <div class="row">
+            <h3 class="name">羽球（12 入）</h3>
             <p class="price">$350</p>
           </div>
-          <div class="meta">
+          <div class="desc">
             <ul>
               <li>狀態：全新未拆</li>
-              <li>備註：球速/型號（例如 AS-30）</li>
+              <li>備註：球速 / 型號（例：AS-30）</li>
               <li>交易：面交 / 店到店 / 郵寄</li>
             </ul>
           </div>
         </div>
-        <div class="foot">
-          <div class="small">可一次多件打包更便宜</div>
-          <div class="contact">
-            <a class="btn green" href="#line">LINE 詢問</a>
-          </div>
+        <div class="cardFoot">
+          <div class="small">可多件打包更便宜</div>
+          <a class="btn primary" href="#contact">詢問</a>
         </div>
       </article>
     </section>
 
-    <div class="sectionTitle" id="line">聯絡方式</div>
-    <section class="hero" style="margin-top:10px">
-      <p class="sub" style="margin:0">
-        把下面連結改成你的 LINE / IG / 電話都可以。<br>
-        ✅ 最建議：LINE 連結（朋友點一下就能直接聊天）。
-      </p>
-      <div class="chips" style="margin-top:12px">
-        <!-- TODO: 把 href 換成你的 LINE 連結 -->
-        <a class="btn green" href="https://line.me/ti/p/" target="_blank" rel="noopener">開啟 LINE 私訊</a>
-        <!-- 也可以改成電話：href="tel:09xxxxxxxx" -->
-        <a class="btn" href="tel:0900000000">打電話（可改）</a>
-      </div>
-      <div class="hint">
-        想要更精緻：我也可以幫你加「分類（拍/鞋/球）」或「搜尋」或「一鍵複製匯款資訊」。
+    <div class="sectionTitle" id="contact">聯絡</div>
+    <section class="contactBox">
+      <p>把下面按鈕連結換成你的 LINE / IG / 電話就好（建議用 LINE 最方便）。</p>
+      <div class="contactRow">
+        <!-- TODO：把 href 換成你的 LINE 連結 -->
+        <a class="btn primary" href="https://line.me/ti/p/" target="_blank" rel="noopener">LINE 私訊</a>
+        <!-- TODO：把電話換成你的 -->
+        <a class="btn" href="tel:0900000000">打電話</a>
       </div>
     </section>
 
     <footer class="footer">
-      <div>© <span id="y"></span> Badminton Sale</div>
-      <div>提示：網址分享給朋友即可；需要改商品就改 <span class="kbd">index.html</span></div>
+      <div>© <span id="y"></span> 羽球獎品出清</div>
+      <div>需要改商品：編輯 <span class="kbd">index.html</span></div>
     </footer>
   </div>
 
