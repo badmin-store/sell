@@ -13,11 +13,17 @@
       --text:#121212;
       --muted:#6b7280;
       --line:#eceef1;
-      --accent:#3b82f6;
+      --accent:#3b82f6;    /* 主色（按鈕/點綴） */
       --soft:#f4f6f8;
       --radius:18px;
       --shadow: 0 10px 30px rgba(17, 24, 39, .06);
+
+      /* 火爆驚艷（獎品價） */
+      --hot1:#ff2d55;      /* 粉紅紅 */
+      --hot2:#ff8a00;      /* 橘 */
+      --hot3:#7c3aed;      /* 紫 */
     }
+
     *{box-sizing:border-box}
     body{
       margin:0;
@@ -29,32 +35,16 @@
     }
     a{color:inherit; text-decoration:none}
     .wrap{max-width:980px; margin:0 auto; padding:22px}
+
     header{
       display:flex; align-items:flex-start; justify-content:space-between;
       gap:14px; padding:10px 0 4px;
     }
-    .brand{
-      display:flex; align-items:center; gap:10px; min-width:0;
-    }
-    .dot{
-      width:12px; height:12px; border-radius:50%;
-      background: var(--accent);
-      box-shadow: 0 0 0 6px rgba(59,130,246,.12);
-      margin-top:7px;
-      flex:0 0 auto;
-    }
-    h1{
-      font-size:18px; margin:0;
-      letter-spacing:.2px;
-    }
-    .sub{
-      margin:4px 0 0;
-      color: var(--muted);
-      font-size: 13px;
-    }
-    .btns{
-      display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end;
-    }
+    .brand{display:flex; align-items:center; gap:10px; min-width:0;}
+    h1{font-size:18px; margin:0; letter-spacing:.2px;}
+    .sub{margin:4px 0 0; color: var(--muted); font-size: 13px;}
+
+    .btns{display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end;}
     .btn{
       display:inline-flex; align-items:center; gap:8px;
       padding:10px 12px;
@@ -74,34 +64,6 @@
       color: #fff;
       border-color: rgba(59,130,246,.35);
       box-shadow: 0 10px 26px rgba(59,130,246,.18);
-    }
-
-    .hero{
-      margin-top:14px;
-      border: 1px solid var(--line);
-      background: var(--card);
-      border-radius: var(--radius);
-      padding: 16px;
-      box-shadow: var(--shadow);
-    }
-    .heroRow{
-      display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between;
-    }
-    .pill{
-      display:inline-flex; align-items:center;
-      gap:8px;
-      padding:8px 10px;
-      border-radius: 999px;
-      background: var(--soft);
-      border:1px solid var(--line);
-      font-size: 12px;
-      color: #374151;
-    }
-    .pill b{font-weight:750}
-    .note{
-      margin:10px 0 0;
-      color: var(--muted);
-      font-size: 12px;
     }
 
     .sectionTitle{
@@ -154,9 +116,7 @@
       background: rgba(255,255,255,.92);
       color:#111827;
     }
-    .tag.sold{
-      color:#6b7280;
-    }
+    .tag.sold{color:#6b7280;}
 
     .content{padding:14px}
     .row{
@@ -170,24 +130,77 @@
       letter-spacing:.1px;
     }
 
-    /* ✅ 市價＋售價 */
+    /* ✅ 價格區：最低市價 + 獎品價（火爆驚艷） */
     .priceWrap{
       display:flex;
       flex-direction:column;
       align-items:flex-end;
-      gap:2px;
+      gap:6px;
       flex: 0 0 auto;
     }
-    .marketPrice{
-      font-size: 12px;
+
+    .marketLine{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      font-size:12px;
       color: var(--muted);
-      text-decoration: line-through;
       white-space: nowrap;
     }
-    .salePrice{
-      font-size: 15px;
-      font-weight: 900;
+    .marketLabel{
+      padding:2px 8px;
+      border-radius: 999px;
+      border:1px solid var(--line);
+      background: var(--soft);
+      color:#4b5563;
+      font-weight: 800;
+      font-size: 11px;
+    }
+    .marketPrice{
+      text-decoration: line-through;
+      font-weight: 800;
+      letter-spacing:.1px;
+    }
+
+    /* 火爆驚艷徽章：獎品價 */
+    .prizeBadge{
+      position:relative;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:8px 10px;
+      border-radius: 999px;
+      color:#fff;
+      font-weight: 950;
+      letter-spacing:.2px;
       white-space: nowrap;
+      background: linear-gradient(90deg, var(--hot1), var(--hot2), var(--hot3));
+      box-shadow: 0 10px 22px rgba(255, 45, 85, .22);
+      border: 1px solid rgba(255, 45, 85, .18);
+      overflow:hidden;
+    }
+    .prizeBadge:before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background: radial-gradient(220px 120px at 20% 10%, rgba(255,255,255,.35), transparent 50%),
+                  radial-gradient(260px 140px at 80% 40%, rgba(255,255,255,.25), transparent 55%);
+      pointer-events:none;
+      opacity:.9;
+    }
+    .prizeBadge > span{position:relative}
+    .prizeLabel{
+      font-size:11px;
+      font-weight: 900;
+      padding:2px 8px;
+      border-radius:999px;
+      background: rgba(255,255,255,.18);
+      border:1px solid rgba(255,255,255,.22);
+    }
+    .prizePrice{
+      font-size:15px;
+      font-weight: 1000;
+      text-shadow: 0 1px 0 rgba(0,0,0,.12);
     }
 
     .desc{
@@ -205,10 +218,7 @@
       background: #fafafa;
       align-items:center; justify-content:space-between;
     }
-    .small{
-      font-size: 12px;
-      color: var(--muted);
-    }
+    .small{font-size: 12px; color: var(--muted);}
 
     .contactBox{
       margin-top: 14px;
@@ -218,26 +228,13 @@
       padding: 16px;
       box-shadow: var(--shadow);
     }
-    .contactBox p{margin:0; color: var(--muted); font-size:13px}
-    .contactRow{
-      margin-top: 12px;
-      display:flex; gap:10px; flex-wrap:wrap;
-    }
+    .contactRow{margin-top: 12px; display:flex; gap:10px; flex-wrap:wrap;}
     .footer{
       margin: 18px 0 8px;
       color: var(--muted);
       font-size: 12px;
       display:flex; flex-wrap:wrap; gap:10px;
       justify-content:space-between;
-    }
-    .kbd{
-      padding:2px 8px;
-      border-radius: 10px;
-      border: 1px solid var(--line);
-      background: var(--soft);
-      color:#374151;
-      font-weight: 800;
-      font-size: 11px;
     }
   </style>
 </head>
@@ -247,7 +244,7 @@
     <header>
       <div class="brand">
         <div style="min-width:0">
-          <h1>商品皆為羽球比賽獎品，最便宜出清，商品皆為全新，不負責保固</h1>
+          <h1>商品皆為羽球比賽獎品故不負責保固，數量有限最便宜出清，商品皆為全新，可預約保留2天</h1>
           <p class="sub">限面交</p>
         </div>
       </div>
@@ -266,14 +263,25 @@
           <img src="images/v01.jpg?v=1" alt="羽球拍" />
           <div class="tag">可售</div>
         </div>
+
         <div class="content">
           <div class="row">
             <h3 class="name">YONEX 羽球拍（型號：___）</h3>
+
             <div class="priceWrap">
-              <div class="marketPrice">市價 $2,800</div>
-              <div class="salePrice">$1,200</div>
+              <div class="marketLine">
+                <span class="marketLabel">最低市價</span>
+                <span class="marketPrice">$2,800</span>
+              </div>
+
+              <div class="prizeBadge" aria-label="獎品價">
+                <span class="prizeLabel">獎品價</span>
+                <span class="prizePrice">$1,200</span>
+                <span aria-hidden="true">🔥</span>
+              </div>
             </div>
           </div>
+
           <div class="desc">
             <ul>
               <li>狀態：全新</li>
@@ -282,6 +290,7 @@
             </ul>
           </div>
         </div>
+
         <div class="cardFoot">
           <div class="small">更新：2025-12-22</div>
         </div>
@@ -293,14 +302,25 @@
           <img src="images/02.jpg?v=1" alt="羽球鞋" />
           <div class="tag sold">已售</div>
         </div>
+
         <div class="content">
           <div class="row">
             <h3 class="name">羽球鞋（尺寸：26.5）</h3>
+
             <div class="priceWrap">
-              <div class="marketPrice">市價 $1,980</div>
-              <div class="salePrice">$900</div>
+              <div class="marketLine">
+                <span class="marketLabel">最低市價</span>
+                <span class="marketPrice">$1,980</span>
+              </div>
+
+              <div class="prizeBadge" aria-label="獎品價">
+                <span class="prizeLabel">獎品價</span>
+                <span class="prizePrice">$900</span>
+                <span aria-hidden="true">🔥</span>
+              </div>
             </div>
           </div>
+
           <div class="desc">
             <ul>
               <li>狀態：全新</li>
@@ -309,6 +329,7 @@
             </ul>
           </div>
         </div>
+
         <div class="cardFoot">
           <div class="small">已售出（可保留紀錄）</div>
         </div>
@@ -320,14 +341,25 @@
           <img src="images/03.jpg?v=1" alt="羽球" />
           <div class="tag">可售</div>
         </div>
+
         <div class="content">
           <div class="row">
             <h3 class="name">羽球（12 入）</h3>
+
             <div class="priceWrap">
-              <div class="marketPrice">市價 $480</div>
-              <div class="salePrice">$350</div>
+              <div class="marketLine">
+                <span class="marketLabel">最低市價</span>
+                <span class="marketPrice">$480</span>
+              </div>
+
+              <div class="prizeBadge" aria-label="獎品價">
+                <span class="prizeLabel">獎品價</span>
+                <span class="prizePrice">$350</span>
+                <span aria-hidden="true">🔥</span>
+              </div>
             </div>
           </div>
+
           <div class="desc">
             <ul>
               <li>狀態：全新未拆</li>
@@ -336,6 +368,7 @@
             </ul>
           </div>
         </div>
+
         <div class="cardFoot">
           <div class="small">可多件打包更便宜</div>
         </div>
