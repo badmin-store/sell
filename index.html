@@ -8,20 +8,27 @@
 
   <style>
     :root{
-      --bg:#fbfbfc;
+      --bg:#f7f8fa;
       --card:#ffffff;
       --text:#121212;
       --muted:#6b7280;
-      --line:#eceef1;
-      --accent:#3b82f6;    /* 主色（按鈕/點綴） */
-      --soft:#f4f6f8;
-      --radius:18px;
-      --shadow: 0 10px 30px rgba(17, 24, 39, .06);
+      --line:#e5e7eb;
+      --accent:#2563eb;
+      --soft:#f3f4f6;
+      --radius:16px;
+      --shadow: 0 2px 12px rgba(17, 24, 39, .07);
 
-      /* 火爆驚艷（獎品價） */
-      --hot1:#ff2d55;      /* 粉紅紅 */
-      --hot2:#ff8a00;      /* 橘 */
-      --hot3:#7c3aed;      /* 紫 */
+      --hot1:#ff2d55;
+      --hot2:#ff8a00;
+      --hot3:#7c3aed;
+
+      /* 狀態色 */
+      --status-sale-bg: #dcfce7;
+      --status-sale-text: #15803d;
+      --status-sold-bg: #f3f4f6;
+      --status-sold-text: #9ca3af;
+      --status-reserve-bg: #fff7ed;
+      --status-reserve-text: #c2410c;
     }
 
     *{box-sizing:border-box}
@@ -34,44 +41,67 @@
       line-height: 1.6;
     }
     a{color:inherit; text-decoration:none}
-    .wrap{max-width:980px; margin:0 auto; padding:22px}
+    .wrap{max-width:980px; margin:0 auto; padding:20px 16px}
 
     header{
       display:flex; align-items:flex-start; justify-content:space-between;
       gap:14px; padding:10px 0 4px;
     }
     .brand{display:flex; align-items:center; gap:10px; min-width:0;}
-    h1{font-size:18px; margin:0; letter-spacing:.2px;}
-    .sub{margin:4px 0 0; color: var(--muted); font-size: 13px;}
+    h1{font-size:16px; margin:0; letter-spacing:.2px; font-weight:700; line-height:1.5}
+    .sub{margin:6px 0 0; color: var(--muted); font-size: 13px;}
 
-    .btns{display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end;}
+    .btns{display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end; flex-shrink:0}
     .btn{
       display:inline-flex; align-items:center; gap:8px;
-      padding:10px 12px;
+      padding:10px 16px;
       border-radius: 999px;
       border:1px solid var(--line);
       background: var(--card);
-      box-shadow: 0 6px 18px rgba(17, 24, 39, .04);
-      font-weight: 650;
+      font-weight: 700;
       font-size: 13px;
-      transition: transform .12s ease;
+      transition: transform .12s ease, box-shadow .12s ease;
       user-select:none;
       white-space:nowrap;
+      cursor:pointer;
     }
-    .btn:hover{transform: translateY(-1px)}
+    .btn:hover{transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,.08)}
     .btn.primary{
       background: var(--accent);
       color: #fff;
-      border-color: rgba(59,130,246,.35);
-      box-shadow: 0 10px 26px rgba(59,130,246,.18);
+      border-color: transparent;
     }
 
+    /* ── 篩選列 ── */
+    .filterBar{
+      display:flex; gap:8px; flex-wrap:wrap;
+      margin: 16px 0 12px;
+    }
+    .pill{
+      padding: 6px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: var(--card);
+      font-size: 13px; font-weight:600;
+      cursor:pointer;
+      transition: all .12s;
+      user-select:none;
+      color: var(--muted);
+    }
+    .pill.active{
+      background: var(--text);
+      color: #fff;
+      border-color: var(--text);
+    }
+    .pill:hover:not(.active){ background: var(--soft) }
+
     .sectionTitle{
-      margin:18px 0 10px;
-      font-size: 14px;
-      color:#374151;
-      font-weight: 750;
-      letter-spacing:.2px;
+      margin:4px 0 12px;
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 600;
+      letter-spacing:.3px;
+      text-transform:uppercase;
     }
 
     .grid{
@@ -86,139 +116,150 @@
       background: var(--card);
       overflow:hidden;
       box-shadow: var(--shadow);
+      transition: transform .15s ease, box-shadow .15s ease;
+      position: relative;
     }
-    @media (min-width: 760px){
-      .card{grid-column: span 6;}
-      header{align-items:center}
-      h1{font-size:20px}
+    .card:hover{ transform: translateY(-2px); box-shadow: 0 8px 24px rgba(17,24,39,.1) }
+    .card.is-sold{ opacity: 1 }  /* 不用opacity，改用遮罩 */
+
+    @media (min-width: 600px){
+      .card{ grid-column: span 6; }
+      header{ align-items:center }
+      h1{ font-size:17px }
+    }
+    @media (min-width: 900px){
+      .card{ grid-column: span 4; }
     }
 
+    /* ── 圖片區 ── */
     .media{
       width:100%;
       aspect-ratio: 4 / 3;
       background: var(--soft);
-      border-bottom: 1px solid var(--line);
       position:relative;
+      overflow:hidden;
     }
     .media img{
       width:100%; height:100%;
       object-fit: cover;
       display:block;
+      transition: transform .2s ease;
     }
+    .card:hover .media img{ transform: scale(1.03) }
+
+    /* 售完遮罩 */
+    .sold-overlay{
+      display:none;
+      position:absolute; inset:0;
+      background: rgba(240,240,240,0.72);
+      backdrop-filter: blur(1px);
+      z-index:2;
+      align-items:center; justify-content:center;
+      flex-direction:column; gap:6px;
+    }
+    .is-sold .sold-overlay{ display:flex }
+    .sold-stamp{
+      font-size: 22px; font-weight: 900;
+      color: #9ca3af;
+      border: 3px solid #d1d5db;
+      border-radius: 8px;
+      padding: 6px 18px;
+      letter-spacing: 3px;
+      transform: rotate(-12deg);
+      user-select:none;
+    }
+
+    /* ── 狀態標籤 ── */
     .tag{
       position:absolute;
-      top:12px; left:12px;
-      padding:7px 10px;
+      top:10px; left:10px;
+      z-index:3;
+      padding:5px 12px;
       border-radius:999px;
       font-size:12px;
       font-weight: 800;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.92);
-      color:#111827;
+      letter-spacing:.3px;
     }
-    .tag.sold{color:#6b7280;}
+    .tag.sale{
+      background: var(--status-sale-bg);
+      color: var(--status-sale-text);
+      border: 1px solid #bbf7d0;
+    }
+    .tag.sold{
+      background: var(--status-sold-bg);
+      color: var(--status-sold-text);
+      border: 1px solid #e5e7eb;
+    }
+    .tag.reserve{
+      background: var(--status-reserve-bg);
+      color: var(--status-reserve-text);
+      border: 1px solid #fed7aa;
+    }
 
-    .content{padding:14px}
+    /* ── 卡片內容 ── */
+    .content{padding:12px 14px 10px}
     .row{
       display:flex; align-items:flex-start; justify-content:space-between;
       gap:10px;
     }
     .name{
       margin:0;
-      font-size: 15px;
-      font-weight: 780;
+      font-size: 13px;
+      font-weight: 700;
       letter-spacing:.1px;
+      line-height: 1.45;
+      color: var(--text);
     }
+    .is-sold .name{ color: var(--muted) }
 
-    /* ✅ 價格區：最低市價 + 獎品價（火爆驚艷） */
+    /* 價格 */
     .priceWrap{
-      display:flex;
-      flex-direction:column;
-      align-items:flex-end;
-      gap:6px;
-      flex: 0 0 auto;
+      display:flex; flex-direction:column; align-items:flex-end; gap:5px; flex-shrink:0;
     }
-
     .marketLine{
-      display:flex;
-      align-items:center;
-      gap:8px;
-      font-size:12px;
-      color: var(--muted);
-      white-space: nowrap;
+      display:flex; align-items:center; gap:6px;
+      font-size:11px; color: var(--muted); white-space: nowrap;
     }
     .marketLabel{
-      padding:2px 8px;
-      border-radius: 999px;
-      border:1px solid var(--line);
-      background: var(--soft);
-      color:#4b5563;
-      font-weight: 800;
-      font-size: 11px;
+      padding:1px 7px; border-radius: 999px;
+      border:1px solid var(--line); background: var(--soft);
+      color:#6b7280; font-weight: 700; font-size: 10px;
     }
-    .marketPrice{
-      text-decoration: line-through;
-      font-weight: 800;
-      letter-spacing:.1px;
-    }
+    .marketPrice{ text-decoration: line-through; font-weight: 700 }
 
-    /* 火爆驚艷徽章：獎品價 */
     .prizeBadge{
-      position:relative;
-      display:inline-flex;
-      align-items:center;
-      gap:6px;
-      padding:8px 10px;
-      border-radius: 999px;
-      color:#fff;
-      font-weight: 950;
-      letter-spacing:.2px;
-      white-space: nowrap;
+      display:inline-flex; align-items:center; gap:5px;
+      padding:6px 10px; border-radius: 999px; color:#fff;
+      font-weight: 900; white-space: nowrap;
       background: linear-gradient(90deg, var(--hot1), var(--hot2), var(--hot3));
-      box-shadow: 0 10px 22px rgba(255, 45, 85, .22);
-      border: 1px solid rgba(255, 45, 85, .18);
-      overflow:hidden;
+      font-size:13px;
     }
-    .prizeBadge:before{
-      content:"";
-      position:absolute;
-      inset:-2px;
-      background: radial-gradient(220px 120px at 20% 10%, rgba(255,255,255,.35), transparent 50%),
-                  radial-gradient(260px 140px at 80% 40%, rgba(255,255,255,.25), transparent 55%);
-      pointer-events:none;
-      opacity:.9;
+    .is-sold .prizeBadge{
+      background: #e5e7eb;
+      box-shadow:none;
     }
-    .prizeBadge > span{position:relative}
+    .is-sold .prizeBadge .prizeLabel,
+    .is-sold .prizeBadge .prizePrice{ color:#9ca3af }
     .prizeLabel{
-      font-size:11px;
-      font-weight: 900;
-      padding:2px 8px;
-      border-radius:999px;
-      background: rgba(255,255,255,.18);
-      border:1px solid rgba(255,255,255,.22);
+      font-size:10px; font-weight: 800;
+      padding:1px 7px; border-radius:999px;
+      background: rgba(255,255,255,.2);
+      color:#fff;
     }
-    .prizePrice{
-      font-size:15px;
-      font-weight: 1000;
-      text-shadow: 0 1px 0 rgba(0,0,0,.12);
-    }
+    .prizePrice{ font-size:14px; font-weight: 900 }
 
-    .desc{
-      margin:8px 0 0;
-      color: var(--muted);
-      font-size: 13px;
-    }
-    .desc ul{margin:0; padding-left:18px}
-    .desc li{margin:4px 0}
+    .desc{ margin:8px 0 0; color: var(--muted); font-size: 12px }
+    .desc ul{ margin:0; padding-left:16px }
+    .desc li{ margin:3px 0 }
 
     .cardFoot{
-      display:flex; gap:10px; flex-wrap:wrap;
-      padding: 12px 14px 14px;
+      display:flex; gap:10px;
+      padding: 10px 14px 12px;
       border-top:1px solid var(--line);
       background: #fafafa;
       align-items:center; justify-content:space-between;
     }
-    .small{font-size: 12px; color: var(--muted);}
+    .small{ font-size: 12px; color: var(--muted) }
 
     .contactBox{
       margin-top: 14px;
@@ -231,11 +272,12 @@
     .contactRow{margin-top: 12px; display:flex; gap:10px; flex-wrap:wrap;}
     .footer{
       margin: 18px 0 8px;
-      color: var(--muted);
-      font-size: 12px;
-      display:flex; flex-wrap:wrap; gap:10px;
-      justify-content:space-between;
+      color: var(--muted); font-size: 12px;
+      display:flex; flex-wrap:wrap; gap:10px; justify-content:space-between;
     }
+
+    /* hidden class */
+    .card.hidden{ display:none }
   </style>
 </head>
 
@@ -244,565 +286,421 @@
     <header>
       <div class="brand">
         <div style="min-width:0">
-          <h1>商品為羽球比賽獎品故不負責保固，商品皆為市面最低價，狀態全新數量有限，可預約保留2天</h1>
-          <h1>商品皆附型號，詳細外觀可自行上網查詢，謝謝</h1>
-          <p class="sub">限面交</p>
+          <h1>商品為羽球比賽獎品，不負責保固，皆附型號，詳細外觀可自行上網查詢</h1>
+          <p class="sub">全新未拆封 · 市面最低價 · 可預約保留 2 天 · 限面交</p>
         </div>
       </div>
-
       <div class="btns">
-        <a class="btn" href="https://line.me/ti/p/QYx1JZ46ey">聯絡我</a>
+        <a class="btn primary" href="https://line.me/ti/p/QYx1JZ46ey">聯絡我</a>
       </div>
     </header>
 
-    <div class="sectionTitle" id="items">商品</div>
+    <!-- 篩選列 -->
+    <div class="filterBar">
+      <div class="pill active" data-filter="all">全部</div>
+      <div class="pill" data-filter="sale">
+        <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#16a34a;margin-right:5px;vertical-align:middle"></span>
+        可售
+      </div>
+      <div class="pill" data-filter="reserve">
+        <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#ea580c;margin-right:5px;vertical-align:middle"></span>
+        預約中
+      </div>
+      <div class="pill" data-filter="sold">
+        <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#d1d5db;margin-right:5px;vertical-align:middle"></span>
+        已售出
+      </div>
+    </div>
+
+    <div class="sectionTitle" id="items">商品列表</div>
 
     <section class="grid" aria-label="items">
-      <article class="card">
-        <div class="media">
-          <img src="images/NF_170LT.png" alt="羽球拍" />
-          <div class="tag">可售</div>
-        </div>
 
+      <!-- ===== 可售品 ===== -->
+      <article class="card" data-status="sale">
+        <div class="media">
+          <img src="images/NF_170LT.png" alt="YONEX NF-170LT" />
+          <div class="tag sale">可售</div>
+        </div>
         <div class="content">
           <div class="row">
-            <h3 class="name">YONEX 羽球拍（型號：NF-170LT）</h3>
-
+            <h3 class="name">YONEX 羽球拍<br><small style="font-weight:600;color:#6b7280">NF-170LT</small></h3>
             <div class="priceWrap">
               <div class="marketLine">
                 <span class="marketLabel">網路低價</span>
                 <span class="marketPrice">$1,680</span>
               </div>
-
-              <div class="prizeBadge" aria-label="獎品價">
+              <div class="prizeBadge">
                 <span class="prizeLabel">獎品價</span>
                 <span class="prizePrice">$1,100</span>
-                <span aria-hidden="true">🔥</span>
               </div>
             </div>
           </div>
-          <div class="desc">
-            <ul>
-              <li>狀態：全新</li>
-            </ul>
-          </div>
         </div>
         <div class="cardFoot">
-          <div class="small">數量: 1 件</div>
+          <div class="small">全新 · 數量：1 件</div>
         </div>
       </article>
 
-      
-
-     <article class="card">
+      <article class="card" data-status="sale">
         <div class="media">
-          <img src="images/14265081_R4.jpg" alt="羽球拍" />
-          <div class="tag">可售</div>
+          <img src="images/14265081_R4.jpg" alt="MIZUNO ALTIUS02" />
+          <div class="tag sale">可售</div>
         </div>
         <div class="content">
           <div class="row">
-            <h3 class="name">MIZUNO ALTIUS02 CONTROL 4U5（型號：73GTB40201）</h3>
+            <h3 class="name">MIZUNO 羽球拍<br><small style="font-weight:600;color:#6b7280">ALTIUS02 CONTROL 4U5</small></h3>
             <div class="priceWrap">
               <div class="marketLine">
                 <span class="marketLabel">網路低價</span>
-                <span class="marketPrice">$2,730 </span>
+                <span class="marketPrice">$2,730</span>
               </div>
-              <div class="prizeBadge" aria-label="獎品價">
+              <div class="prizeBadge">
                 <span class="prizeLabel">獎品價</span>
                 <span class="prizePrice">$2,150</span>
-                <span aria-hidden="true">🔥</span>
               </div>
             </div>
           </div>
-          <div class="desc">
-            <ul>
-              <li>狀態：全新</li>
-            </ul>
-          </div>
         </div>
         <div class="cardFoot">
-          <div class="small">數量: 1 件</div>
+          <div class="small">全新 · 數量：1 件</div>
         </div>
       </article>
-      
-      <article class="card">
-        <div class="media">
-          <img src="images/JET_SPEED_T1.jpg" alt="羽球拍" />
-          <div class="tag">已售出</div>
-        </div>
 
+      <article class="card" data-status="sale">
+        <div class="media">
+          <img src="images/MMOA_AIR_POWER_5000.jpg" alt="MMOA AIR POWER 5000" />
+          <div class="tag sale">可售</div>
+        </div>
         <div class="content">
           <div class="row">
-            <h3 class="name">VICTOR 羽球拍（型號：JET SPEED T1）</h3>
-
+            <h3 class="name">MMOA 羽球拍<br><small style="font-weight:600;color:#6b7280">AIR POWER 5000</small></h3>
             <div class="priceWrap">
               <div class="marketLine">
                 <span class="marketLabel">網路低價</span>
-                <span class="marketPrice">$2,840 </span>
+                <span class="marketPrice">$1,350</span>
               </div>
-
-              <div class="prizeBadge" aria-label="獎品價">
-                <span class="prizeLabel">獎品價</span>
-                <span class="prizePrice">$2,150</span>
-                <span aria-hidden="true">🔥</span>
-              </div>
-            </div>
-          </div>
-          <div class="desc">
-            <ul>
-              <li>狀態：全新</li>
-            </ul>
-          </div>
-        </div>
-        <div class="cardFoot">
-          <div class="small">數量: 1 件</div>
-        </div>
-      </article>
-      <article class="card">
-        <div class="media">
-          <img src="images/MMOA_AIR_POWER_5000.jpg" alt="羽球拍" />
-          <div class="tag">可售</div>
-        </div>
-  
-        <div class="content">
-          <div class="row">
-            <h3 class="name">MMOA 羽球拍（型號：MMOA AIR POWER 5000）</h3>
-
-            <div class="priceWrap">
-              <div class="marketLine">
-                <span class="marketLabel">網路低價</span>
-                <span class="marketPrice">$1,350 </span>
-              </div>
-
-              <div class="prizeBadge" aria-label="獎品價">
+              <div class="prizeBadge">
                 <span class="prizeLabel">獎品價</span>
                 <span class="prizePrice">$900</span>
-                <span aria-hidden="true">🔥</span>
               </div>
             </div>
           </div>
-          <div class="desc">
-            <ul>
-              <li>狀態：全新</li>
-            </ul>
-          </div>
         </div>
         <div class="cardFoot">
-          <div class="small">數量: 1 件</div>
-        </div>
-      </article>      
-
-
-      <article class="card">
-        <div class="media">
-          <img src="images/Nanoflare_800.jpg" alt="羽球拍" />
-          <div class="tag">已售出</div>
-        </div>
-
-        <div class="content">
-          <div class="row">
-            <h3 class="name">YONEX 羽球拍（型號：Nanoflare 800 Tour）</h3>
-
-            <div class="priceWrap">
-              <div class="marketLine">
-                <span class="marketLabel">網路低價</span>
-                <span class="marketPrice">$3,290 </span>
-              </div>
-
-              <div class="prizeBadge" aria-label="獎品價">
-                <span class="prizeLabel">獎品價</span>
-                <span class="prizePrice">$2,380</span>
-                <span aria-hidden="true">🔥</span>
-              </div>
-            </div>
-          </div>
-          <div class="desc">
-            <ul>
-              <li>狀態：全新 - 已售出</li>
-            </ul>
-          </div>
-        </div>
-        <div class="cardFoot">
-          <div class="small">數量: 0 件</div>
-        </div>
-      </article>    
-
-      <article class="card">
-        <div class="media">
-          <img src="images/THRUSTER_K_BOOM.jpg" alt="羽球拍" />
-          <div class="tag">已售出</div>
-        </div>
-
-        <div class="content">
-          <div class="row">
-            <h3 class="name">VICTOR 羽球拍（型號：THRUSTER K BOOM）</h3>
-
-            <div class="priceWrap">
-              <div class="marketLine">
-                <span class="marketLabel">網路低價</span>
-                <span class="marketPrice">$1,980 </span>
-              </div>
-
-              <div class="prizeBadge" aria-label="獎品價">
-                <span class="prizeLabel">獎品價</span>
-                <span class="prizePrice">$1,100</span>
-                <span aria-hidden="true">🔥</span>
-              </div>
-            </div>
-          </div>
-          <div class="desc">
-            <ul>
-              <li>狀態：全新 - 已售出</li>
-            </ul>
-          </div>
-        </div>
-        <div class="cardFoot">
-          <div class="small">數量: 0 件</div>
+          <div class="small">全新 · 數量：1 件</div>
         </div>
       </article>
 
-      
-      
-      <article class="card">
+      <article class="card" data-status="sale">
         <div class="media">
-          <img src="images/RH_SR114.png" alt="球袋" />
-          <div class="tag sold">可售</div>
+          <img src="images/RH_SR114.png" alt="REDSON RH SR114" />
+          <div class="tag sale">可售</div>
         </div>
-
         <div class="content">
           <div class="row">
-            <h3 class="name">REDSON RH SR114 羽球後背包</h3>
-
+            <h3 class="name">REDSON 後背包<br><small style="font-weight:600;color:#6b7280">RH SR114</small></h3>
             <div class="priceWrap">
               <div class="marketLine">
                 <span class="marketLabel">網路低價</span>
                 <span class="marketPrice">$2,660</span>
               </div>
-
-              <div class="prizeBadge" aria-label="獎品價">
+              <div class="prizeBadge">
                 <span class="prizeLabel">獎品價</span>
                 <span class="prizePrice">$1,950</span>
-                <span aria-hidden="true">🔥</span>
               </div>
             </div>
           </div>
-
-          <div class="desc">
-            <ul>
-              <li>狀態：全新</li>
-            </ul>
-          </div>
         </div>
-
         <div class="cardFoot">
-          <div class="small">數量: 1 件</div>
+          <div class="small">全新 · 數量：1 件</div>
         </div>
       </article>
 
-
-      <article class="card">
+      <article class="card" data-status="sale">
         <div class="media">
-          <img src="images/RH_SR112.jpg" alt="球袋" />
-          <div class="tag sold">預約中</div>
+          <img src="images/BAG2461EX.png" alt="YONEX BAG2461EX" />
+          <div class="tag sale">可售</div>
         </div>
-
         <div class="content">
           <div class="row">
-            <h3 class="name">REDSON RH SR112 羽球後背包</h3>
-
-            <div class="priceWrap">
-              <div class="marketLine">
-                <span class="marketLabel">網路低價</span>
-                <span class="marketPrice">$2,450</span>
-              </div>
-
-              <div class="prizeBadge" aria-label="獎品價">
-                <span class="prizeLabel">獎品價</span>
-                <span class="prizePrice">$1,750</span>
-                <span aria-hidden="true">🔥</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="desc">
-            <ul>
-              <li>狀態：全新 - 預約中</li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="cardFoot">
-          <div class="small">數量: 1 件</div>
-        </div>
-      </article>
-
-      <article class="card">
-        <div class="media">
-          <img src="images/BAG2469EX.jpg" alt="球袋" />
-          <div class="tag">已售出</div>
-        </div>
-
-        <div class="content">
-          <div class="row">
-            <h3 class="name">YONEX BAG2469EX 羽球後背包</h3>
-
-            <div class="priceWrap">
-              <div class="marketLine">
-                <span class="marketLabel">網路低價</span>
-                <span class="marketPrice">$2,450</span>
-              </div>
-
-              <div class="prizeBadge" aria-label="獎品價">
-                <span class="prizeLabel">獎品價</span>
-                <span class="prizePrice">$1,550</span>
-                <span aria-hidden="true">🔥</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="desc">
-            <ul>
-              <li>狀態：全新 - 已售出</li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="cardFoot">
-          <div class="small">數量: 0 件 </div>
-        </div>
-      </article>
-
-      
-      <article class="card">
-        <div class="media">
-          <img src="images/BAG2461EX.png" alt="球袋" />
-          <div class="tag">可售</div>
-        </div>
-
-        <div class="content">
-          <div class="row">
-            <h3 class="name">YONEX BAG2461EX 羽球後背包</h3>
-
+            <h3 class="name">YONEX 後背包<br><small style="font-weight:600;color:#6b7280">BAG2461EX</small></h3>
             <div class="priceWrap">
               <div class="marketLine">
                 <span class="marketLabel">網路低價</span>
                 <span class="marketPrice">$1,690</span>
               </div>
-
-              <div class="prizeBadge" aria-label="獎品價">
+              <div class="prizeBadge">
                 <span class="prizeLabel">獎品價</span>
                 <span class="prizePrice">$1,250</span>
-                <span aria-hidden="true">🔥</span>
               </div>
             </div>
           </div>
-
-          <div class="desc">
-            <ul>
-              <li>狀態：全新</li>
-            </ul>
-          </div>
         </div>
-
         <div class="cardFoot">
-          <div class="small">數量: 1 件</div>
+          <div class="small">全新 · 數量：1 件</div>
         </div>
       </article>
 
-
-      <article class="card">
+      <article class="card" data-status="sale">
         <div class="media">
-          <img src="images/YOOT3407TR_1.jpg" alt="球袋" />
-          <div class="tag">可售</div>
+          <img src="images/YOOT3407TR_1.jpg" alt="YONEX YOOT3407TR" />
+          <div class="tag sale">可售</div>
         </div>
-
         <div class="content">
           <div class="row">
-            <h3 class="name">YONEX YOOT3407TR 羽球後背包</h3>
-
+            <h3 class="name">YONEX 後背包<br><small style="font-weight:600;color:#6b7280">YOOT3407TR</small></h3>
             <div class="priceWrap">
               <div class="marketLine">
                 <span class="marketLabel">網路低價</span>
                 <span class="marketPrice">$980</span>
               </div>
-
-              <div class="prizeBadge" aria-label="獎品價">
+              <div class="prizeBadge">
                 <span class="prizeLabel">獎品價</span>
                 <span class="prizePrice">$650</span>
-                <span aria-hidden="true">🔥</span>
               </div>
             </div>
           </div>
-
-          <div class="desc">
-            <ul>
-              <li>狀態：全新</li>
-            </ul>
-          </div>
         </div>
-
         <div class="cardFoot">
-          <div class="small">數量: 1 件 </div>
+          <div class="small">全新 · 數量：1 件</div>
         </div>
       </article>
 
-
-      <article class="card">
+      <article class="card" data-status="sale">
         <div class="media">
-          <img src="images/BR2001.jpg" alt="球袋" />
-          <div class="tag">可售</div>
+          <img src="images/BR2001.jpg" alt="VICTOR BR2001" />
+          <div class="tag sale">可售</div>
         </div>
-
         <div class="content">
           <div class="row">
-            <h3 class="name">VICTOR BR2001 羽球後背包</h3>
-
+            <h3 class="name">VICTOR 後背包<br><small style="font-weight:600;color:#6b7280">BR2001</small></h3>
             <div class="priceWrap">
               <div class="marketLine">
                 <span class="marketLabel">網路低價</span>
                 <span class="marketPrice">$1,170</span>
               </div>
-
-              <div class="prizeBadge" aria-label="獎品價">
+              <div class="prizeBadge">
                 <span class="prizeLabel">獎品價</span>
                 <span class="prizePrice">$750</span>
-                <span aria-hidden="true">🔥</span>
               </div>
             </div>
           </div>
-
-          <div class="desc">
-            <ul>
-              <li>狀態：全新</li>
-            </ul>
-          </div>
         </div>
-
         <div class="cardFoot">
-          <div class="small">數量: 4 件 (多件優惠)</div>
+          <div class="small">全新 · 數量：4 件（多件優惠）</div>
         </div>
       </article>
 
-
-
-
-      <article class="card">
+      <article class="card" data-status="sale">
         <div class="media">
-          <img src="images/BR6019G.jpg" alt="球袋" />
-          <div class="tag">可售</div>
+          <img src="images/BR6019G.jpg" alt="VICTOR BR6019" />
+          <div class="tag sale">可售</div>
         </div>
-
         <div class="content">
           <div class="row">
-            <h3 class="name">VICTOR BR6019 羽球後背包</h3>
-
+            <h3 class="name">VICTOR 後背包<br><small style="font-weight:600;color:#6b7280">BR6019</small></h3>
             <div class="priceWrap">
               <div class="marketLine">
                 <span class="marketLabel">網路低價</span>
                 <span class="marketPrice">$1,110</span>
               </div>
-
-              <div class="prizeBadge" aria-label="獎品價">
+              <div class="prizeBadge">
                 <span class="prizeLabel">獎品價</span>
                 <span class="prizePrice">$750</span>
-                <span aria-hidden="true">🔥</span>
               </div>
             </div>
           </div>
-
-          <div class="desc">
-            <ul>
-              <li>狀態：全新</li>
-            </ul>
-          </div>
         </div>
-
         <div class="cardFoot">
-          <div class="small">數量: 1 件 </div>
+          <div class="small">全新 · 數量：1 件</div>
         </div>
       </article>
 
-
-
-
-
-      <article class="card">
+      <article class="card" data-status="sale">
         <div class="media">
-          <img src="images/MBB_584.jpg" alt="球袋" />
-          <div class="tag">可售</div>
+          <img src="images/MBB_584.jpg" alt="MMOA MBB 584" />
+          <div class="tag sale">可售</div>
         </div>
-
         <div class="content">
           <div class="row">
-            <h3 class="name">MMOA MBB 584 羽球拍袋</h3>
-
+            <h3 class="name">MMOA 羽球拍袋<br><small style="font-weight:600;color:#6b7280">MBB 584</small></h3>
             <div class="priceWrap">
               <div class="marketLine">
                 <span class="marketLabel">網路低價</span>
                 <span class="marketPrice">$1,400</span>
               </div>
-
-              <div class="prizeBadge" aria-label="獎品價">
+              <div class="prizeBadge">
                 <span class="prizeLabel">獎品價</span>
                 <span class="prizePrice">$550</span>
-                <span aria-hidden="true">🔥</span>
               </div>
             </div>
           </div>
-
-          <div class="desc">
-            <ul>
-              <li>狀態：全新</li>
-            </ul>
-          </div>
         </div>
-
         <div class="cardFoot">
-          <div class="small">數量: 1 件 </div>
+          <div class="small">全新 · 數量：1 件</div>
         </div>
       </article>
 
-
-      <article class="card">
+      <article class="card" data-status="sale">
         <div class="media">
-          <img src="images/MBB_821.jpg" alt="球袋" />
-          <div class="tag">可售</div>
+          <img src="images/MBB_821.jpg" alt="MMOA MBB 821" />
+          <div class="tag sale">可售</div>
         </div>
-
         <div class="content">
           <div class="row">
-            <h3 class="name">MMOA MBB 821 羽球拍袋</h3>
-
+            <h3 class="name">MMOA 羽球拍袋<br><small style="font-weight:600;color:#6b7280">MBB 821</small></h3>
             <div class="priceWrap">
               <div class="marketLine">
                 <span class="marketLabel">網路低價</span>
                 <span class="marketPrice">$950</span>
               </div>
-
-              <div class="prizeBadge" aria-label="獎品價">
+              <div class="prizeBadge">
                 <span class="prizeLabel">獎品價</span>
                 <span class="prizePrice">$550</span>
-                <span aria-hidden="true">🔥</span>
               </div>
             </div>
           </div>
-
-          <div class="desc">
-            <ul>
-              <li>狀態：全新</li>
-            </ul>
-          </div>
         </div>
-
         <div class="cardFoot">
-          <div class="small">數量: 1 件 </div>
+          <div class="small">全新 · 數量：1 件</div>
         </div>
       </article>
-      
-      
+
+      <!-- ===== 預約中 ===== -->
+      <article class="card" data-status="reserve">
+        <div class="media">
+          <img src="images/RH_SR112.jpg" alt="REDSON RH SR112" />
+          <div class="tag reserve">預約中</div>
+        </div>
+        <div class="content">
+          <div class="row">
+            <h3 class="name">REDSON 後背包<br><small style="font-weight:600;color:#6b7280">RH SR112</small></h3>
+            <div class="priceWrap">
+              <div class="marketLine">
+                <span class="marketLabel">網路低價</span>
+                <span class="marketPrice">$2,450</span>
+              </div>
+              <div class="prizeBadge">
+                <span class="prizeLabel">獎品價</span>
+                <span class="prizePrice">$1,750</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="cardFoot">
+          <div class="small">全新 · 數量：1 件（預約中）</div>
+        </div>
+      </article>
+
+      <!-- ===== 已售出 ===== -->
+      <article class="card is-sold" data-status="sold">
+        <div class="media">
+          <img src="images/JET_SPEED_T1.jpg" alt="VICTOR JET SPEED T1" />
+          <div class="tag sold">已售出</div>
+          <div class="sold-overlay"><div class="sold-stamp">已售出</div></div>
+        </div>
+        <div class="content">
+          <div class="row">
+            <h3 class="name">VICTOR 羽球拍<br><small style="font-weight:600;color:#9ca3af">JET SPEED T1</small></h3>
+            <div class="priceWrap">
+              <div class="marketLine">
+                <span class="marketLabel">網路低價</span>
+                <span class="marketPrice">$2,840</span>
+              </div>
+              <div class="prizeBadge">
+                <span class="prizeLabel">獎品價</span>
+                <span class="prizePrice">$2,150</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="cardFoot">
+          <div class="small">已售出 · 數量：0 件</div>
+        </div>
+      </article>
+
+      <article class="card is-sold" data-status="sold">
+        <div class="media">
+          <img src="images/Nanoflare_800.jpg" alt="YONEX Nanoflare 800 Tour" />
+          <div class="tag sold">已售出</div>
+          <div class="sold-overlay"><div class="sold-stamp">已售出</div></div>
+        </div>
+        <div class="content">
+          <div class="row">
+            <h3 class="name">YONEX 羽球拍<br><small style="font-weight:600;color:#9ca3af">Nanoflare 800 Tour</small></h3>
+            <div class="priceWrap">
+              <div class="marketLine">
+                <span class="marketLabel">網路低價</span>
+                <span class="marketPrice">$3,290</span>
+              </div>
+              <div class="prizeBadge">
+                <span class="prizeLabel">獎品價</span>
+                <span class="prizePrice">$2,380</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="cardFoot">
+          <div class="small">已售出 · 數量：0 件</div>
+        </div>
+      </article>
+
+      <article class="card is-sold" data-status="sold">
+        <div class="media">
+          <img src="images/THRUSTER_K_BOOM.jpg" alt="VICTOR THRUSTER K BOOM" />
+          <div class="tag sold">已售出</div>
+          <div class="sold-overlay"><div class="sold-stamp">已售出</div></div>
+        </div>
+        <div class="content">
+          <div class="row">
+            <h3 class="name">VICTOR 羽球拍<br><small style="font-weight:600;color:#9ca3af">THRUSTER K BOOM</small></h3>
+            <div class="priceWrap">
+              <div class="marketLine">
+                <span class="marketLabel">網路低價</span>
+                <span class="marketPrice">$1,980</span>
+              </div>
+              <div class="prizeBadge">
+                <span class="prizeLabel">獎品價</span>
+                <span class="prizePrice">$1,100</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="cardFoot">
+          <div class="small">已售出 · 數量：0 件</div>
+        </div>
+      </article>
+
+      <article class="card is-sold" data-status="sold">
+        <div class="media">
+          <img src="images/BAG2469EX.jpg" alt="YONEX BAG2469EX" />
+          <div class="tag sold">已售出</div>
+          <div class="sold-overlay"><div class="sold-stamp">已售出</div></div>
+        </div>
+        <div class="content">
+          <div class="row">
+            <h3 class="name">YONEX 後背包<br><small style="font-weight:600;color:#9ca3af">BAG2469EX</small></h3>
+            <div class="priceWrap">
+              <div class="marketLine">
+                <span class="marketLabel">網路低價</span>
+                <span class="marketPrice">$2,450</span>
+              </div>
+              <div class="prizeBadge">
+                <span class="prizeLabel">獎品價</span>
+                <span class="prizePrice">$1,550</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="cardFoot">
+          <div class="small">已售出 · 數量：0 件</div>
+        </div>
+      </article>
+
     </section>
 
-    <div class="sectionTitle" id="contact">聯絡</div>
+    <div class="sectionTitle" id="contact" style="margin-top:24px">聯絡</div>
     <section class="contactBox">
       <div class="contactRow">
         <a class="btn primary" href="https://line.me/ti/p/QYx1JZ46ey" target="_blank" rel="noopener">LINE 私訊</a>
@@ -816,6 +714,24 @@
 
   <script>
     document.getElementById("y").textContent = new Date().getFullYear();
+
+    const pills = document.querySelectorAll('.pill');
+    const cards = document.querySelectorAll('.card');
+
+    pills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        pills.forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+        const filter = pill.dataset.filter;
+        cards.forEach(card => {
+          if (filter === 'all' || card.dataset.status === filter) {
+            card.classList.remove('hidden');
+          } else {
+            card.classList.add('hidden');
+          }
+        });
+      });
+    });
   </script>
 </body>
 </html>
